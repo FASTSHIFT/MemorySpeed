@@ -111,9 +111,11 @@ static void memset_speed_test(void* dest, uint8_t value, size_t size, uint32_t r
 
 int main(void)
 {
-    static const uint32_t test_data_rd[TEST_DATA_SIZE / sizeof(uint32_t)] = { 0 };
+    static uint32_t test_data_rd[TEST_DATA_SIZE / sizeof(uint32_t)];
     static uint32_t test_data_wr[TEST_DATA_SIZE / sizeof(uint32_t)];
+
     memcpy_speed_test(test_data_wr, test_data_rd, TEST_DATA_SIZE, TEST_REPEAT_NUM);
     memset_speed_test(test_data_wr, 0x55, TEST_DATA_SIZE, TEST_REPEAT_NUM);
+
     return 0;
 }
