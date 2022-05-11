@@ -40,7 +40,8 @@
 #  define LOG_PRINTF(fmt, ...)    Serial.printf(fmt, ##__VA_ARGS__)
 #elif defined (_WIN32)
 #  include <Windows.h>
-#  define GET_TICK_MS()           GetTickCount()
+#  pragma comment(lib, "Winmm.lib")
+#  define GET_TICK_MS()           timeGetTime()
 #  define LOG_PRINTF(fmt, ...)    printf(fmt, ##__VA_ARGS__)
 #else
 #  include <time.h>
