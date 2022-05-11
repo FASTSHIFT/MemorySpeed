@@ -26,10 +26,14 @@
 #include <string.h>
 
 /* Increase the value of TEST_DATA_SIZE to reduce cache impact */
-#define TEST_DATA_SIZE    (256 * 1024 * 1024)
+#define TEST_DATA_SIZE           (256 * 1024 * 1024)
 
 /* Increase the value of TEST_REPEAT_NUM to reduce timing errors */
-#define TEST_REPEAT_NUM   100
+#define TEST_REPEAT_NUM           200
+
+/* Custom memcpy() and memset() */
+#define TEST_MEMCPY(dst, src, n)  memcpy(dest, src, n)
+#define TEST_MEMSET(dst, val, n)  memset(dst, val, n)
 
 #if defined(ARDUINO)
 #  define GET_TICK_MS()           millis()
@@ -59,7 +63,7 @@ static void memcpy_speed_test(void* dest, const void* src, size_t size, uint32_t
     uint32_t start = GET_TICK_MS();
     for (uint32_t i = 0; i < repeat; i++)
     {
-        memcpy(dest, src, size);
+        TEST_MEMCPY(dest, src, size);
     }
     uint32_t cost_time = GET_TICK_MS() - start;
 
@@ -84,7 +88,7 @@ static void memset_speed_test(void* dest, uint8_t value, size_t size, uint32_t r
     uint32_t start = GET_TICK_MS();
     for (uint32_t i = 0; i < repeat; i++)
     {
-        memset(dest, value, size);
+        TEST_MEMSET(dest, value, size);
     }
     uint32_t cost_time = GET_TICK_MS() - start;
 
