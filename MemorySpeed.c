@@ -24,20 +24,24 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <string.h>
-#include <time.h>
 
 /* Increase the value of TEST_DATA_SIZE to reduce cache impact */
-#define TEST_DATA_SIZE    (64 * 1024 * 1024)
+#define TEST_DATA_SIZE    (256 * 1024 * 1024)
 
 /* Increase the value of TEST_REPEAT_NUM to reduce timing errors */
-#define TEST_REPEAT_NUM   1000
+#define TEST_REPEAT_NUM   100
 
-#ifdef ARDUINO
-#  define GET_TICK_MS()         millis()
-#  define LOG_PRINTF(fmt...)    Serial.printf(fmt)
+#if defined(ARDUINO)
+#  define GET_TICK_MS()           millis()
+#  define LOG_PRINTF(fmt, ...)    Serial.printf(fmt, ##__VA_ARGS__)
+#elif defined (WIN32)
+#  include <Windows.h>
+#  define GET_TICK_MS()           GetTickCount()
+#  define LOG_PRINTF(fmt, ...)    printf(fmt, ##__VA_ARGS__)
 #else
-#  define GET_TICK_MS()         get_timestamp()
-#  define LOG_PRINTF(fmt...)    printf(fmt)
+#  include <time.h>
+#  define GET_TICK_MS()           get_timestamp()
+#  define LOG_PRINTF(fmt, ...)    printf(fmt, ##__VA_ARGS__)
 
 static uint32_t get_timestamp(void)
 {
@@ -53,19 +57,19 @@ static uint32_t get_timestamp(void)
 static void memcpy_speed_test(void* dest, const void* src, size_t size, uint32_t repeat)
 {
     uint32_t start = GET_TICK_MS();
-    for(uint32_t i = 0; i < repeat; i++)
+    for (uint32_t i = 0; i < repeat; i++)
     {
         memcpy(dest, src, size);
     }
     uint32_t cost_time = GET_TICK_MS() - start;
 
-    if(cost_time == 0)
+    if (cost_time == 0)
     {
         LOG_PRINTF("Time-consuming is too short, please increase the <repeat>\r\n");
         return;
     }
-    
-    uint64_t total_size = size * repeat;
+
+    uint64_t total_size = (uint64_t)size * repeat;
 
     float rate = total_size * 1000 / cost_time / 1024.0f / 1024.0f;
     LOG_PRINTF(
@@ -78,19 +82,19 @@ static void memcpy_speed_test(void* dest, const void* src, size_t size, uint32_t
 static void memset_speed_test(void* dest, uint8_t value, size_t size, uint32_t repeat)
 {
     uint32_t start = GET_TICK_MS();
-    for(uint32_t i = 0; i < repeat; i++)
+    for (uint32_t i = 0; i < repeat; i++)
     {
         memset(dest, value, size);
     }
     uint32_t cost_time = GET_TICK_MS() - start;
 
-    if(cost_time == 0)
+    if (cost_time == 0)
     {
         LOG_PRINTF("Time-consuming is too short, please increase the <repeat>\r\n");
         return;
     }
-    
-    uint64_t total_size = size * repeat;
+
+    uint64_t total_size = (uint64_t)size * repeat;
 
     float rate = total_size * 1000 / cost_time / 1024.0f / 1024.0f;
     LOG_PRINTF(
