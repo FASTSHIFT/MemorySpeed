@@ -25,7 +25,6 @@
 #include <stdint.h>
 #include <string.h>
 #include <time.h>
-#include <inttypes.h>
 
 /* Increase the value of TEST_DATA_SIZE to reduce cache impact */
 #define TEST_DATA_SIZE    (64 * 1024 * 1024)
@@ -70,9 +69,9 @@ static void memcpy_speed_test(void* dest, const void* src, size_t size, uint32_t
 
     float rate = total_size * 1000 / cost_time / 1024.0f / 1024.0f;
     LOG_PRINTF(
-        "memcpy(): rate = %0.2f MB/s [cost: %" PRIu32 " ms]\r\n",
+        "memcpy(): rate = %0.2f MB/s [cost: %d ms]\r\n",
         rate,
-        cost_time
+        (int)cost_time
     );
 }
 
@@ -95,9 +94,9 @@ static void memset_speed_test(void* dest, uint8_t value, size_t size, uint32_t r
 
     float rate = total_size * 1000 / cost_time / 1024.0f / 1024.0f;
     LOG_PRINTF(
-        "memset(): rate = %0.2f MB/s [cost: %" PRIu32 " ms]\r\n",
+        "memset(): rate = %0.2f MB/s [cost: %d ms]\r\n",
         rate,
-        cost_time
+        (int)cost_time
     );
 }
 
