@@ -32,7 +32,7 @@
 #define TEST_REPEAT_NUM           200
 
 /* Custom memcpy() and memset() */
-#define TEST_MEMCPY(dst, src, n)  memcpy(dest, src, n)
+#define TEST_MEMCPY(dst, src, n)  memcpy(dst, src, n)
 #define TEST_MEMSET(dst, val, n)  memset(dst, val, n)
 
 #if defined(ARDUINO)
