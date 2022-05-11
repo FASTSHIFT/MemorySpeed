@@ -38,7 +38,7 @@
 #if defined(ARDUINO)
 #  define GET_TICK_MS()           millis()
 #  define LOG_PRINTF(fmt, ...)    Serial.printf(fmt, ##__VA_ARGS__)
-#elif defined (WIN32)
+#elif defined (_WIN32)
 #  include <Windows.h>
 #  define GET_TICK_MS()           GetTickCount()
 #  define LOG_PRINTF(fmt, ...)    printf(fmt, ##__VA_ARGS__)
